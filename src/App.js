@@ -4,7 +4,7 @@ import "./assets/style/style2.scss";
 
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
-import AddCategory from "./pages/AddCategory";   
+import AddCategory from "./pages/AddCategory";
 import ViewCategory from "./pages/ViewCategory";
 import AddPackage from "./pages/AddPackage";
 import ViewPackage from "./pages/ViewPackage";
@@ -14,7 +14,7 @@ import AddAdmin from "./pages/AddAdmin";
 import Login from "./pages/Login";
 import ViewAdmins from "./pages/ViewAdmins";
 import ViewAdmin from "./pages/ViewAdmin";
-import ViewCustomers from "./pages/ViewCustomers"; 
+import ViewCustomers from "./pages/ViewCustomers";
 import ViewCustomer from "./pages/ViewCustomer";
 import ViewUser from "./pages/ViewUser";
 import ViewBusiness from "./pages/ViewBusiness";
@@ -25,78 +25,45 @@ import ProctedRoutes from "./ProctedRoutes";
 import { useHistory, Switch, Route } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import { useToasts } from 'react-toast-notifications';
-
-
+import { useToasts } from "react-toast-notifications";
+import { getUser } from "./actions/users";
+import { setCategories } from "./actions/categories";
+import { setLocations } from "./actions/locations";
 
 function App() {
-  const isLoggedIn = useSelector( state => state.isLoggedIn );
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const dispatch = useDispatch();
   const { addToast } = useToasts();
 
-
-  // first main method when application start
-  React.useEffect( () => {
-  const token = localStorage.getItem("token");
-  if(token){
-    const url = `${heroku_path}api/admin/admins`;
-    const config = { headers: {"x-auth-token": token } };
-    axios
-      .get(url, config)
-      .then(res => {
-        const {email, name, role} = res.data;
-        dispatch({
-          type: 'SET_USER_DATA',
-          usersData: {email, name, role},
-          token,
-          isLoggedIn: true,
-        })
-      })
-      .catch( err => {
-        if(err.response){
-          if(err.response.status === 401 && err.response.data === "unauth"){
-            addToast('you are not auth to access resource', { appearance: 'info' });
-          }else if(err.response.status === 401 && err.response.data === "Access denied. No token provided."){
-            addToast('please provide token', { appearance: 'info' });
-          }else if(err.response.status === 403 && err.response.data === 'invalid token'){
-            addToast('please provide valid token', { appearance: 'info' });
-          }else{
-            addToast('Server Error, Please try Again', { appearance: 'info' });
-          }
-        }
-      });
-  }else{
-    dispatch({
-      type: 'SET_USER_DATA',
-      isLoggedIn: false,
-    })
-  }
-},[])
+  React.useEffect(() => {
+    dispatch(getUser());
+    dispatch(setCategories());  
+    dispatch(setLocations()); 
+  }, []);
 
   return (
     <div className="App">
       <>
-      { isLoggedIn && <Sidebar />  }
-      <Route path="/login" exact component={Login} />
-          <Switch>
-            <ProctedRoutes path="/" exact component={Dashboard} />
-            <ProctedRoutes path="/add-category" exact component={AddCategory } />
-            <ProctedRoutes path="/view-category" exact component={ViewCategory } />
-            <ProctedRoutes path="/add-package" exact component={AddPackage } />
-            <ProctedRoutes path="/view-package" exact component={ViewPackage } />
-            <ProctedRoutes path="/add-location" exact component={AddLocation } />
-            <ProctedRoutes path="/view-location" exact component={ViewLocation } />
-            <ProctedRoutes path="/add-admin" exact component={AddAdmin } />
-            <ProctedRoutes path="/view-admins" exact component={ViewAdmins} />
-            <ProctedRoutes path="/view-admin/:id" exact component={ViewAdmin} />
-            <ProctedRoutes path="/view-customers" exact component={ViewCustomers} />
-            <ProctedRoutes path="/view-customer/:id" exact component={ViewCustomer} />
-            <ProctedRoutes path="/view-business/:id" exact component={ViewBusiness} />
-            <ProctedRoutes path="/view-user/:id" exact component={ViewUser} />
-            <ProctedRoutes path="*" component={ () => "404 not found" } />
-          </Switch>
+        {isLoggedIn && <Sidebar />}
+        <Route path="/login" exact component={Login} />
+        <Switch>
+          <Route path="/" exact component={Dashboard} />
+          <Route path="/add-category" exact component={AddCategory} />
+          <Route path="/view-category" exact component={ViewCategory} />
+          <Route path="/add-package" exact component={AddPackage} />
+          <Route path="/view-package" exact component={ViewPackage} />
+          <Route path="/add-location" exact component={AddLocation} />
+          <Route path="/view-location" exact component={ViewLocation} />
+          <Route path="/add-admin" exact component={AddAdmin} />
+          <Route path="/view-admins" exact component={ViewAdmins} />
+          <Route path="/view-admin/:id" exact component={ViewAdmin} />
+          <Route path="/view-customers" exact component={ViewCustomers} />
+          <Route path="/view-customer/:id" exact component={ViewCustomer} />
+          <Route path="/view-business/:id" exact component={ViewBusiness} />
+          <Route path="/view-user/:id" exact component={ViewUser} />
+          <Route path="*" component={() => "404 not found"} />
+        </Switch>
       </>
-
     </div>
   );
 }

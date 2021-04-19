@@ -1,37 +1,18 @@
+import { combineReducers } from "redux";
+import usersReducer from "./users";
+import modalsReducer from "./modals";
+import loadingReducer from "./loading";
+import dashboardReducer from "./dashboard";
+import categoriesReducer from "./categories";
+import locationsReducer from "./locations";
 
-// import { combineReducers } from "redux";
-// import loggedReducer from "./isLogged";
+const rootReducer = combineReducers({
+  user: usersReducer,
+  modals: modalsReducer,
+  isLoading: loadingReducer,
+  dashboard: dashboardReducer,
+  categories: categoriesReducer,
+  locations: locationsReducer
+}); 
 
-// const allReducers = combineReducers ({
-//     isLoggedIn : loggedReducer
-// } );
-
-// export default allReducers;
-
-
-const initalState = {
-    usersData: {},
-    token: "",
-    isLoggedIn: true,
-};
-
-export default function reducer(state = initalState, action) {
-    switch (action.type) {
-        case "SET_USER_DATA":
-            return {
-                ...state,
-                usersData: action.usersData,
-                isLoggedIn: action.isLoggedIn,
-                token: action.token,
-            };
-        case "GET_USER_DATA":
-            return {
-                ...state,
-                usersData: action.usersData,
-                isLoggedIn: action.isLoggedIn,
-                token: action.token,
-            };
-        default:
-            return state;
-    }
-}
+export default rootReducer; 

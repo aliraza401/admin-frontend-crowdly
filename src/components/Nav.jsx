@@ -2,15 +2,16 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom"; 
 import { heroku_path } from "./../path";
 import { useToasts } from 'react-toast-notifications';
 
+import { logoutUser } from "./../actions/users"
 
 function ViewCategory() {
-  const name = useSelector(state => state.usersData.name);
-  const email = useSelector(state => state.usersData.email);
-  const role = useSelector(state => state.usersData.role);
+  const name = useSelector(state => state.user.user.name);
+  const email = useSelector(state => state.user.user.email);
+  const role = useSelector(state => state.user.user.role);
   const token = useSelector(state => state.token);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -28,29 +29,8 @@ function ViewCategory() {
   }
 
   const handleLogout = () => {
-    // let url = `http://localhost:5000/api/admin/logout`;
-    // const config = { headers: { "x-auth-token": token } };
-    // axios
-    //   .get(url, config )
-    //   .then( res => {
-    //     localStorage.removeItem("token");
-    //     dispatch({
-    //       type: 'SET_USER_DATA',
-    //       usersData: {},
-    //       token: "",
-    //       isLoggedIn: false
-    //   }); 
-    //     // addToast('Logout Success', { appearance: 'error' })
-    //     history.push("/login");
-    //   })
-    // .catch( err => console.log(err));
+    dispatch(logoutUser());
 
-    dispatch({
-        type: 'SET_USER_DATA',
-        usersData: {},
-        token: "",
-        isLoggedIn: false
-    }); 
     localStorage.removeItem("token");
     addToast('Logout Success', { appearance: 'error' })
     history.push("/login");

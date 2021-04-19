@@ -4,14 +4,15 @@ import Nav from "./../components/Nav";
 import Footer from "./../components/Footer";
 import {Modal} from  "react-bootstrap";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { heroku_path } from "./../path";
 import { useToasts } from 'react-toast-notifications';
 import { Ripple } from "react-css-spinners";
 
+import {setLocations} from "../actions/locations";
+
 
 function AddLocation() {
-  const [ city, setCity ] = React.useState([]);
   const [ formCity, setFormCity ] = React.useState({});
   const [ formArea, setFormArea ] = React.useState({});
   const [selectedArea, setSelectedArea] = React.useState({});
@@ -23,43 +24,25 @@ function AddLocation() {
   const [ loadingArea, setLoadingArea ] = React.useState(false);
   const [ loadingCityDrop, setLoadingCityDrop ] = React.useState(true);
 
-
-  const token = useSelector( state => state.token );
+  const city = useSelector( state => state.locations.locations );
+  const token = useSelector( state => state.user.token );
+  const dispatch = useDispatch();
 
   React.useEffect( () => {
-      if(token){
-        const url = `${heroku_path}api/city`;
-        const config = { headers: {"x-auth-token": token } };
-        axios
-          .get(url, config )
-          .then(res =>  {setCity(res.data); setLoadingCityDrop(false); } )  
-          .catch( err => {
-            if(err.response.status === 401 && err.response.data === "unauth"){
-              addToast('you are not auth to access resource', { appearance: 'info' });
-            }else if(err.response.status === 401 && err.response.data === "Access denied. No token provided."){
-              addToast('please provide token', { appearance: 'info' });
-            }else if(err.response.status === 403 && err.response.data === 'invalid token'){
-              addToast('please provide valid token', { appearance: 'info' });
-            }else{
-              addToast('Server Error, Please try Again', { appearance: 'info' });
-            }
-          })
-      }
+    dispatch(setLocations());
   },[]);
   
   const handleCitySubmmit = e => {
     e.preventDefault();
     console.log( formCity );
-    const url = `${heroku_path}api/city`;
+    const url = `http://localhost:5000/api/city`;
     const config = { headers: {"x-auth-token": token } };
-    setLoadingCity(true);
     axios
       .post(url, {name: formCity.name} , config )
       .then(res => {
           if(res.status >= 200 && res.status < 300 ){
-            setLoadingCity(false);
             setFormCity({ name: "" })
-            setCity( prev => [ ...prev, res.data ] );
+            dispatch(setLocations());
             addToast('city add success', { appearance: 'success' });
           }
       })  
@@ -79,14 +62,13 @@ function AddLocation() {
   const handleAreaSubmmit = e => {
     e.preventDefault();
     // console.log("33")
-    const url = `${heroku_path}api/city/area`;
+    const url = `http://localhost:5000/api/city/area`;
     const config = { headers: {"x-auth-token": token } };
-    setLoadingArea(true);
     axios
-      .post(url, formArea , config )
+      .post(url, { city_id: formArea._id, name: formArea.name, coordinates: formArea.coordinates } , config )
       .then(res => {
           if(res.status >= 200 && res.status < 300 ){
-            setLoadingArea(false)
+            dispatch(setLocations())
             setFormArea({ name:"", coordinates:"", _id:"" });
             addToast('area add success', { appearance: 'success' });
           }
@@ -132,11 +114,7 @@ function AddLocation() {
                         </div>
                       </div>
                     </div>
-                    {
-                      loadingCity ? 
-                      <div style={{height:50}} class=" pull-right"><Ripple color="#8553aa" size={30} /></div>:
                       <button type="submit" class="btn btn-primary pull-right">Add City</button>
-                    }
                     <div class="clearfix"></div>
                   </form>
                 </div>
@@ -168,16 +146,14 @@ function AddLocation() {
                 <div class="card-body">
                   <form  onSubmit={handleAreaSubmmit} >
                     <div class="row">
-
+ 
                       <div class="col-md-12">
                         <div class="form-group">
                           {
-                              loadingCityDrop ?
-                              <Ripple color="#8553aa" size={30} />:
                               <select value={ formArea._id } onChange={ e => setFormArea({ ...formArea, _id: e.target.value }) } class="custom-select mb-3" id="validationCustom04">
                                 <option selected disabled value=""> City Name </option>
                                   {
-                                      city.map(e => (
+                                      city && city.map(e => (
                                           <option value={ e._id } key={ e._id } > { e.name } </option>
                                       ))
                                   }

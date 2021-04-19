@@ -7,7 +7,7 @@ import SidebarImg from "./../assets/img/sidebar-1.jpg";
 
 function Sidebar() {
   const history = useHistory();
-  const name = useSelector(state => state.usersData.name);
+  const name = useSelector(state => state.user.user.name);
 
 
   return (

@@ -8,6 +8,9 @@ import { heroku_path } from "./../path";
 import { useToasts } from 'react-toast-notifications';
 import {Ripple} from "react-css-spinners";
 
+import { setLoading } from "../actions/loading";
+import { customLogin } from "../actions/users";
+
 function Login(props) {
     const { addToast } = useToasts();
     const [ formdata, setFormData ] = React.useState({});
@@ -19,57 +22,28 @@ function Login(props) {
         // if( !isLoggedIn ){ props.history.push('/') }
     },[])
 
-    const handleloginFormSubmit = e => {
-        e.preventDefault();
-        console.log("here")
-
-        setloading(false);
-        dispatch({
-            type: 'SET_USER_DATA',
-            usersData: { email: "ali@gmail.com", name:"Ali Raza", role: "3" },
-            token: "38257281358123",
-            isLoggedIn: true 
-        }); 
-        addToast('Login Successfully', { appearance: 'success' });
-        props.history.push('/');
-
-        // const url = `${heroku_path}api/admin/login`;
-        // setloading(true);
-        // axios.post( url, formdata )
-        // .then( res => {
-        //     if( res.status >= 200 && res.status < 300 ){
-        //         console.log("here")
-        //         setloading(false);
-        //         const { email, name, role, token } = res.data;
-        //         localStorage.setItem( "token", token );
-        //         dispatch({
-        //             type: 'SET_USER_DATA',
-        //             usersData: { email, name, role },
-        //             token: res.data.token,
-        //             isLoggedIn: true
-        //         }); 
-        //         addToast('Login Successfully', { appearance: 'success' });
-        //         props.history.push('/');
-        //     }else{
-        //         setloading(false);
-        //     }
-        // })
-        // .catch( err => {
-        //     if(err.response.status === 401 && err.response.data === "Invalid email or password."){
-        //       console.log(err.response)
-        //       addToast('wrong email or password', { appearance: 'info' });
-        //       setFormData({ ...formdata, password: "" });
-        //       setloading(false);
-        //     }
-        // })
-
-    }
+  const handleCustomLogin = e => { 
+    e.preventDefault(); 
+    dispatch(setLoading(true));
+    dispatch(customLogin( formdata ))
+    .then( res => {
+      if(res.error){
+          addToast( res.error.data.message , { appearance: 'info' });
+          console.log(res.error);
+      }else{
+        addToast('Login Success', { appearance: 'success' });
+        setFormData({});
+        props.history.push("/")
+      }
+    });
+    dispatch(setLoading(false));
+  }
  
 
   return (
     <div className="text-center login">
 
-    <form class="form-signin" onSubmit={handleloginFormSubmit} >
+    <form class="form-signin" onSubmit={handleCustomLogin} >
         <img class=" " src={logoImg} alt="" className="img img-fluid" style={{width:260}}  />
         <h4 class="h4 my-4 font-weight-normal"></h4>
         <label for="inputEmail"  class="sr-only">Email address</label>

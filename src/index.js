@@ -4,16 +4,24 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { ToastProvider } from 'react-toast-notifications';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from "redux";
 import allReducers from "./reducers";
 import { Provider } from "react-redux";
+import Thunk from "redux-thunk";
 
-const store = createStore( allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() );
+
+const composeEnchancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const store = createStore(
+  allReducers,
+  composeEnchancer(applyMiddleware(Thunk)) 
+); 
+
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter basename='dialbox-admin/' >
+      <BrowserRouter >
         <ToastProvider autoDismiss autoDismissTimeout={2000} >
           <App /> 
         </ToastProvider>
