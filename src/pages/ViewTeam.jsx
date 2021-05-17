@@ -6,17 +6,19 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import EditImg from "./../assets/img/pencil-fill.png";
 import { setLoading } from "../actions/loading";
-
+import { setTeam } from './../actions/utils'
 
 
 function ViewAdmins() {
   const token = useSelector(state => state.token);
-  const admins = useSelector(state => state.admins.admins);
+  const dispatch = useDispatch();
+  const teams = useSelector(state => state.utils.teams);
 
   React.useEffect(() => {
+    dispatch(setTeam());
   }, []);
-
 
   return (
     <div className="ViewLocation">
@@ -32,7 +34,7 @@ function ViewAdmins() {
                 <div class="col-md-12">
                   <div class="card">
                     <div class="card-header card-header-primary">
-                      <h4 class="card-title ">Admin Table</h4>
+                      <h4 class="card-title ">Join Club Table</h4>
                       <p class="card-category"> Here is table of all cities and area in system</p>
                     </div>
                     <div class="card-body">
@@ -42,15 +44,21 @@ function ViewAdmins() {
                             <th> No. </th>
                             <th> Name </th>
                             <th> Email </th>
+                            <th> Contact Number </th>
+                            <th> Skills </th>
+                            <th> Bio </th>
                           </thead>
                           <tbody>
                             {
-                              admins && admins.map((e, index) =>
+                              teams && teams.map((e, index) =>
                                 <>
                                   <tr>
                                     <td> {index + 1} </td>
                                     <td> {e.name} </td>
                                     <td> {e.email} </td>
+                                    <td> {e.contact_number} </td>
+                                    <td> {e.skills} </td>
+                                    <td> {e.bio} </td>
                                   </tr>
                                 </>
                               )

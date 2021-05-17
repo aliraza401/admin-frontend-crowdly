@@ -5,6 +5,9 @@ import loadingReducer from "./loading";
 import dashboardReducer from "./dashboard";
 import categoriesReducer from "./categories";
 import locationsReducer from "./locations";
+import adminsReducer from "./admins";
+import workersReducer from "./workers";  
+import utilsReducer from "./utils";
 
 const rootReducer = combineReducers({
   user: usersReducer,
@@ -12,7 +15,11 @@ const rootReducer = combineReducers({
   isLoading: loadingReducer,
   dashboard: dashboardReducer,
   categories: categoriesReducer,
-  locations: locationsReducer
+  locations: locationsReducer,
+  admins: adminsReducer,
+  workers: workersReducer,
+  utils: utilsReducer,
+
 }); 
 
 export default rootReducer; 

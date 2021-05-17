@@ -1,15 +1,18 @@
 import axios from "axios";
+import {path} from './../path';
 
 
 export const customLogin = (data) => async (dispatch) => {
-  let url = `http://localhost:5000/api/admin/login`;
+  let url = `${path}api/admin/login`;
   const user = await axios.post(url, data).catch((err) => {
     return { error: err.response };
   });
 
   if (user.error) return user;
 
-  dispatch({
+  console.log(data.data)
+
+  dispatch({ 
     type: "SET_USER",
     payload: { user: user.data.admin },
   });
@@ -26,38 +29,38 @@ export const customLogin = (data) => async (dispatch) => {
   localStorage.setItem("token", user.data.token);
 
   dispatch({
-    type: "SET_REFRESH_TOKEN", 
+    type: "SET_REFRESH_TOKEN",
     payload: { refreshToken: user.data.refreshToken },
   });
   localStorage.setItem("refreshToken", user.data.refreshToken);
- 
-  return user;
- 
-};  
+
+  return user; 
+
+};
  
 export const getUser = (response) => async (dispatch) => {
-  let url = `http://localhost:5000/api/admin/`;
+  let url = `${path}api/admin/self`; 
   const config = { headers: { "x-auth-token": localStorage.getItem("token") } };
   const user = await axios.get(url, config).catch((err) => {
     // refresh token logic
-    if( err.response.data.message === "jwt expired" && err.response.data.status === 401  ){
-        let urlRefreshToken = `http://localhost:5000/api/users/refresh-token`;
-        const config = {
-          headers: { "x-auth-token": localStorage.getItem("refreshToken") },
-        };
-        axios
-          .get(urlRefreshToken, config)
-          .then( res => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("tempToken");
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("refreshToken", res.data.refreshToken);
-            getUser();
-          })
-          .catch((err) => console.log(err));
-    }
-     
-  }); 
+    if (err.response && err.response.data.message === "jwt expired" &&  err.response && err.response.data.status === 401) {
+      let urlRefreshToken = `${path}api/admin/refresh-token`;
+      const config = {
+        headers: { "x-auth-token": localStorage.getItem("refreshToken") },
+      };
+      axios
+        .get(urlRefreshToken, config)
+        .then(res => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("tempToken");
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          getUser();
+        })
+        .catch((err) => console.log(err));
+    } 
+  });
+
 
 
   if (user != undefined) {

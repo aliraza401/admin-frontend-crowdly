@@ -1,6 +1,6 @@
 {
   "name": "crowdly-admin",
-  "homepage": "http://markloops.com/crowdly-admin/",
+  "homepage": "http://theangrynerds.com/crowdly-admin",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -10,9 +10,9 @@
     "axios": "^0.21.0",
     "joi-browser": "^13.4.0",
     "node-sass": "^4.14.1",
-    "react": "^17.0.1", 
+    "react": "^17.0.1",
     "react-bootstrap": "^1.4.0",
-    "react-css-spinners": "^4.0.2", 
+    "react-css-spinners": "^4.0.2",
     "react-dom": "^17.0.1",
     "react-facebook-login": "^4.1.1",
     "react-google-login": "^5.1.22",

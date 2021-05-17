@@ -1,8 +1,9 @@
 import axios from "axios";
+import {path} from './../path';
 
 export const setDashboard = () => async (dispatch) => {
   
-  let url = `http://localhost:5000/api/utility/dashboard`;
+  let url = `${path}api/utility/dashboard`;
   const data = await axios.get(url).catch((err) => {
     console.log(err.response)
     return { error: err.response };

@@ -8,26 +8,26 @@ function Footer() {
           <nav class="float-left">
             <ul>
               <li>
-                <a href="">
+                <a href="http://theangrynerds.com/" target="_blank" >
                   About Us
                 </a>
               </li>
               <li>
-                <a href="">
-                  Crowdlys
+              <a href="http://theangrynerds.com/" target="_blank" >
+                  Crowdly
                 </a>
               </li>
               <li>
-                <a href="https://www.creative-tim.com/license">
+              <a href="http://theangrynerds.com/" target="_blank" >
                   Licenses
                 </a>
               </li>
-            </ul>
+            </ul> 
           </nav>
           <div class="copyright float-right">
             &copy;
-                 powered by {" "}
-            <span className="text-success" >AngryNerds.</span>
+                 powered by 
+            <span className="text-success" >  <a href="http://theangrynerds.com/" target="_blank" style={{color: 'green'}} >AngryNerds.</a></span>
           </div>
         </div>
       </footer>
@@ -35,3 +35,4 @@ function Footer() {
 }
 
 export default Footer;
+

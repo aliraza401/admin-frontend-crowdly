@@ -1,13 +1,12 @@
 import React from "react";
-import SidebarImg from "./../assets/img/sidebar-1.jpg"
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router-dom";
 import logoImg from "./../assets/img/logo.png";
-import { heroku_path } from "./../path";
+import { path } from "./../path";
 import { useToasts } from 'react-toast-notifications';
 import {Ripple} from "react-css-spinners";
-
+ 
 import { setLoading } from "../actions/loading";
 import { customLogin } from "../actions/users";
 

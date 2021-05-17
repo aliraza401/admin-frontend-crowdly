@@ -1,8 +1,9 @@
 import axios from "axios";
+import {path} from './../path';
 
 export const setCategories = () => async (dispatch) => {
   
-  let url = `http://localhost:5000/api/categories/all`;
+  let url = `${path}api/categories/all`;
   const data = await axios.get(url).catch((err) => {
     console.log(err.response)
     return { error: err.response };

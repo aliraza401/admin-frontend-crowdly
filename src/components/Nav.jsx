@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {DropdownButton, Dropdown } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom"; 
-import { heroku_path } from "./../path";
+import { path } from "./../path";
 import { useToasts } from 'react-toast-notifications';
 
 import { logoutUser } from "./../actions/users"
