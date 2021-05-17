@@ -120,7 +120,7 @@ function ViewLocation() {
                             <th> City Name </th>
                             <th> Area Name </th>
                             <th> Coordinates </th>
-                            {/* <th> EDIT </th> */}
+                            {/* <th> EDIT </th> */} 
                             <th> DELETE </th>
                           </thead>
                           <tbody>

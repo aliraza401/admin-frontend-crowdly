@@ -130,7 +130,7 @@ function ViewCategory() {
                             <th> No. </th>
                             <th> Category </th>
                             <th> Sub-Category </th>
-                            {/* <th> EDIT </th> */}
+                            {/* <th> EDIT </th> */} 
                             <th> DELETE </th>
                           </thead>
                           <tbody>
