@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals'; 
-import { BrowserRouter } from 'react-router-dom'; 
+import { BrowserRouter } from 'react-router-dom';  
 import { ToastProvider } from 'react-toast-notifications';
 import { createStore, applyMiddleware, compose } from "redux";
 import allReducers from "./reducers";

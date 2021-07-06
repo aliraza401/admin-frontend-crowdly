@@ -77,6 +77,7 @@ function ViewCategory() {
                             <th> Name </th>
                             <th> Picture </th>
                             <th> Contact </th>
+                            <th> Email </th>
                             <th> Location </th>
                             <th> Category </th>
                             <th> CNIC NO </th>
@@ -90,7 +91,8 @@ function ViewCategory() {
                                   {/* <td> {index + 1} </td> */}
                                   <td>{e.u_id && e.u_id.name}</td>
                                   <td>{e.picture === "temp" ? <img className="img text-center w70px img-fluid" src={UserImg} /> : <img className="img w100px img-fluid" src={e.picture} />}</td>
-                                  <td>{e.contact_number}</td>
+                                  <td> <a href={`tel:${e.contact_number}`} className="text-dark" >{e.contact_number}</a></td>
+                                  <td> <a href={`mailto:${e.u_id.email}`} className="text-dark" >{e.u_id.email}</a></td>
                                   <td>{e.area && e.area.name + ", " + e.city && e.city.name}</td>
                                   <td>{e.subCategory_id && e.subCategory_id.name + ", " + e.category_id && e.category_id.name}</td>
                                   <td>{e.cnic_no && e.cnic_no}</td>
